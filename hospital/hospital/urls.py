@@ -1,22 +1,32 @@
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import TemplateView
 
 from patients import views
 
 
 urlpatterns = [
 
-    path(
-        'admin/',
-        admin.site.urls
-    ),
+    # Admin
+    path('admin/', admin.site.urls),
 
+    # Home Page
     path(
         '',
+        TemplateView.as_view(
+            template_name='patients/index.html'
+        ),
+        name='home'
+    ),
+
+    # Dashboard
+    path(
+        'dashboard/',
         views.dashboard,
         name='dashboard'
     ),
 
+    # Patients
     path(
         'patients/',
         views.patient_list,
@@ -41,6 +51,7 @@ urlpatterns = [
         name='delete_patient'
     ),
 
+    # Doctors
     path(
         'doctors/',
         views.doctor_list,
@@ -65,6 +76,7 @@ urlpatterns = [
         name='delete_doctor'
     ),
 
+    # Appointments
     path(
         'appointments/',
         views.appointment_list,
@@ -82,5 +94,4 @@ urlpatterns = [
         views.delete_appointment,
         name='delete_appointment'
     ),
-
 ]
