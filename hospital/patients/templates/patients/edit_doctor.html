@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Doctor | HMS</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial,sans-serif;
+    background: #f3f7fb;
+    color: #172b4d;
+}
+
+.sidebar {
+    position: fixed;
+    width: 245px;
+    height: 100vh;
+    background: linear-gradient(180deg,#16283d,#213b56);
+    padding: 28px 16px;
+    color: white;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    padding: 0 18px 35px;
+}
+
+.logo span {
+    color: #4fc3f7;
+}
+
+.menu-title {
+    font-size: 11px;
+    color: #8fa7bd;
+    padding: 0 18px 10px;
+}
+
+.menu a {
+    display: block;
+    padding: 14px 18px;
+    margin: 6px 0;
+    border-radius: 10px;
+    color: #dce8f2;
+    text-decoration: none;
+}
+
+.menu a:hover,
+.menu a.active {
+    background: #3498db;
+    color: white;
+}
+
+.main {
+    margin-left: 245px;
+    padding: 35px;
+}
+
+.header,
+.card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(20,50,80,.06);
+}
+
+.header {
+    padding: 28px;
+    margin-bottom: 22px;
+}
+
+.header h1 {
+    margin: 0 0 8px;
+}
+
+.header p {
+    margin: 0;
+    color: #718096;
+}
+
+.card {
+    max-width: 850px;
+    padding: 30px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.full {
+    grid-column: 1/-1;
+}
+
+label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input {
+    padding: 13px;
+    border: 1px solid #d9e1e8;
+    border-radius: 9px;
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: #3498db;
+}
+
+.actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 12px;
+}
+
+.update {
+    border: none;
+    background: #3498db;
+    color: white;
+    padding: 13px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cancel {
+    text-decoration: none;
+    background: #edf2f7;
+    color: #475569;
+    padding: 13px 22px;
+    border-radius: 8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏥 HMS<span>.</span>
+    </div>
+
+    <div class="menu-title">
+        Main Menu
+    </div>
+
+    <div class="menu">
+
+        <a href="{% url 'dashboard' %}">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'patient_list' %}">
+            👥 Patients
+        </a>
+
+        <a href="{% url 'doctor_list' %}" class="active">
+            🩺 Doctors
+        </a>
+
+        <a href="{% url 'appointment_list' %}">
+            📅 Appointments
+        </a>
+
+        <a href="/admin/">
+            ⚙️ Administration
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="main">
+
+    <div class="header">
+
+        <h1>Update Doctor</h1>
+
+        <p>
+            Update doctor profile and consultation information.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label>Doctor Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        value="{{ doctor.name }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Specialization</label>
+
+                    <input
+                        type="text"
+                        name="specialization"
+                        value="{{ doctor.specialization }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Phone</label>
+
+                    <input
+                        type="text"
+                        name="phone"
+                        value="{{ doctor.phone }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        value="{{ doctor.email }}"
+                    >
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>Consultation Fee</label>
+
+                    <input
+                        type="number"
+                        name="consultation_fee"
+                        value="{{ doctor.consultation_fee }}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button type="submit" class="update">
+                    ✓ Update Doctor
+                </button>
+
+                <a
+                    href="{% url 'doctor_list' %}"
+                    class="cancel">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
