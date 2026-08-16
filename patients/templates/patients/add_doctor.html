@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Doctor | Hospital Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #243447;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #1f3043;
+            color: white;
+            padding: 28px 18px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 45px;
+            padding-left: 12px;
+        }
+
+        .logo span {
+            color: #3ba3e8;
+        }
+
+        .menu-title {
+            color: #91a4b7;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 0 15px 14px;
+            letter-spacing: 1px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu a {
+            color: #dbe5ee;
+            text-decoration: none;
+            padding: 14px 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover {
+            background: #2d4358;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .main {
+            margin-left: 240px;
+            width: calc(100% - 240px);
+            padding: 45px;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #20354d;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 35px;
+            max-width: 900px;
+            box-shadow: 0 8px 25px rgba(31, 48, 67, 0.08);
+            border: 1px solid #e7edf3;
+        }
+
+        .card-title {
+            font-size: 19px;
+            font-weight: bold;
+            color: #243b53;
+            margin-bottom: 25px;
+        }
+
+        .error-box {
+            background: #fff1f0;
+            border: 1px solid #ffb4ae;
+            color: #c0392b;
+            padding: 14px 17px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .field-error {
+            color: #d63031;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ccd6e0;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: #fbfcfe;
+            transition: 0.2s;
+        }
+
+        .field input:focus {
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.12);
+        }
+
+        .field input::placeholder {
+            color: #a0aec0;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #8a98a8;
+            margin-top: 6px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #edf1f5;
+        }
+
+        .save,
+        .cancel {
+            border: none;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .save {
+            background: #27ae60;
+            color: white;
+        }
+
+        .save:hover {
+            background: #219653;
+            transform: translateY(-1px);
+        }
+
+        .cancel {
+            background: #eef2f6;
+            color: #526273;
+        }
+
+        .cancel:hover {
+            background: #dfe6ed;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+                padding: 25px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏥 HMS<span>.</span>
+        </div>
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <div class="menu">
+
+            <a href="{% url 'dashboard' %}">
+                🏠 Dashboard
+            </a>
+
+            <a href="{% url 'patient_list' %}">
+                👥 Patients
+            </a>
+
+            <a href="{% url 'doctor_list' %}" class="active">
+                🩺 Doctors
+            </a>
+
+            <a href="{% url 'appointment_list' %}">
+                📅 Appointments
+            </a>
+
+            <a href="/admin/">
+                ⚙️ Administration
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="header">
+
+            <h1>Add New Doctor</h1>
+
+            <p>
+                Register a medical professional in the hospital.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                🩺 Doctor Information
+            </div>
+
+
+            {% if form.non_field_errors %}
+
+                <div class="error-box">
+
+                    <strong>
+                        ⚠️ Please correct the following errors:
+                    </strong>
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="grid">
+
+                    <!-- DOCTOR NAME -->
+
+                    <div class="field">
+
+                        <label>
+                            Doctor Name
+                        </label>
+
+                        {{ form.name }}
+
+                        {% for error in form.name.errors %}
+                            <div class="field-error">
+                                ⚠️ {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- SPECIALIZATION -->
+
+                    <div class="field">
+
+                        <label>
+                            Specialization
+                        </label>
+
+                        {{ form.specialization }}
+
+                        {% for error in form.specialization.errors %}
+                            <div class="field-error">
+                                ⚠️ {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="field">
+
+                        <label>
+                            Phone Number
+                        </label>
+
+                        {{ form.phone }}
+
+                        {% for error in form.phone.errors %}
+                            <div class="field-error">
+                                ⚠️ {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="field">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        {{ form.email }}
+
+                        {% for error in form.email.errors %}
+                            <div class="field-error">
+                                ⚠️ {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- EXPERIENCE -->
+
+                    <div class="field">
+
+                        <label>
+                            Experience (Years)
+                        </label>
+
+                        {{ form.experience }}
+
+                        {% for error in form.experience.errors %}
+                            <div class="field-error">
+                                ⚠️ {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- CONSULTATION FEE -->
+
+                    <div class="field">
+
+                        <label>
+                            Consultation Fee (₹)
+                        </label>
+
+                        {{ form.consultation_fee }}
+
+                        {% for error in form.consultation_fee.errors %}
+                            <div class="field-error">
+                                ⚠️ {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <button type="submit" class="save">
+                        ✓ Save Doctor
+                    </button>
+
+                    <a
+                        href="{% url 'doctor_list' %}"
+                        class="cancel">
+                        ← Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

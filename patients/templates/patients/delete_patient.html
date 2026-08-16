@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Patient | HMS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            color: #203247;
+        }
+
+        .layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #203247;
+            color: white;
+            padding: 30px 18px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            padding-left: 18px;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            color: #35a8e0;
+        }
+
+        .menu-title {
+            color: #9fb0c2;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin: 0 0 15px 18px;
+            letter-spacing: 1px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 14px 18px;
+            margin-bottom: 7px;
+            border-radius: 8px;
+            color: #dce6ef;
+            text-decoration: none;
+        }
+
+        .menu a:hover {
+            background: #2d91c9;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+        }
+
+        .card {
+            width: 500px;
+            background: white;
+            padding: 45px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(31, 52, 77, 0.12);
+        }
+
+        .icon {
+            width: 75px;
+            height: 75px;
+            margin: auto;
+            margin-bottom: 22px;
+            border-radius: 50%;
+            background: #fff0f0;
+            color: #e74c3c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .text {
+            color: #718096;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .patient {
+            background: #f7f9fc;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 28px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        button,
+        a {
+            padding: 13px 23px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .delete:hover {
+            background: #c0392b;
+        }
+
+        .cancel {
+            background: #edf2f7;
+            color: #40566d;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏥 HMS<span>.</span>
+        </div>
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <div class="menu">
+
+            <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+
+            <a href="{% url 'patient_list' %}">👥 Patients</a>
+
+            <a href="{% url 'doctor_list' %}">🩺 Doctors</a>
+
+            <a href="{% url 'appointment_list' %}">📅 Appointments</a>
+
+            <a href="/admin/">⚙️ Administration</a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="content">
+
+        <div class="card">
+
+            <div class="icon">
+                🗑️
+            </div>
+
+            <h1>Delete Patient?</h1>
+
+            <p class="text">
+                Are you sure you want to permanently remove this patient
+                from the hospital records?
+            </p>
+
+            <div class="patient">
+                👤 {{ patient.name }}
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="actions">
+
+                    <button
+                        type="submit"
+                        class="delete">
+                        🗑 Delete Patient
+                    </button>
+
+                    <a
+                        href="{% url 'patient_list' %}"
+                        class="cancel">
+                        ← Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

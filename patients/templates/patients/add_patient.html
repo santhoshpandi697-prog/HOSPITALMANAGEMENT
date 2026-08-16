@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Patient | HMS</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f7fb;
+            color: #172b4d;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 245px;
+            height: 100vh;
+            background: linear-gradient(180deg, #16283d, #213b56);
+            padding: 28px 16px;
+            color: white;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            padding: 0 18px 35px;
+        }
+
+        .logo span {
+            color: #4fc3f7;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #8fa7bd;
+            padding: 0 18px 10px;
+            text-transform: uppercase;
+        }
+
+        .menu a {
+            display: block;
+            padding: 14px 18px;
+            margin: 6px 0;
+            border-radius: 10px;
+            color: #dce8f2;
+            text-decoration: none;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .main {
+            margin-left: 245px;
+            padding: 35px;
+        }
+
+        .header {
+            background: white;
+            padding: 28px 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(20, 50, 80, .06);
+            margin-bottom: 22px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #718096;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(20, 50, 80, .07);
+            max-width: 900px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 13px 14px;
+            border: 1px solid #d9e1e8;
+            border-radius: 9px;
+            font-size: 14px;
+            outline: none;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3498db;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .save {
+            border: none;
+            background: #27ae60;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cancel {
+            text-decoration: none;
+            background: #edf2f7;
+            color: #475569;
+            padding: 13px 22px;
+            border-radius: 8px;
+        }
+
+        @media(max-width: 800px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏥 HMS<span>.</span>
+    </div>
+
+    <div class="menu-title">
+        Main Menu
+    </div>
+
+    <div class="menu">
+
+        <a href="{% url 'dashboard' %}">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'patient_list' %}" class="active">
+            👥 Patients
+        </a>
+
+        <a href="{% url 'doctor_list' %}">
+            🩺 Doctors
+        </a>
+
+        <a href="{% url 'appointment_list' %}">
+            📅 Appointments
+        </a>
+
+        <a href="/admin/">
+            ⚙️ Administration
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="main">
+
+    <div class="header">
+
+        <h1>Register New Patient</h1>
+
+        <p>
+            Add complete patient information to the hospital system.
+        </p>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <div class="section-title">
+            👤 Patient Information
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label>Full Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter patient name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Age</label>
+
+                    <input
+                        type="number"
+                        name="age"
+                        placeholder="Enter age"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Gender</label>
+
+                    <select name="gender" required>
+
+                        <option value="">
+                            Select gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Phone Number</label>
+
+                    <input
+                        type="text"
+                        name="phone"
+                        placeholder="Enter phone number"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>Email Address</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="patient@example.com"
+                    >
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>Address</label>
+
+                    <textarea
+                        name="address"
+                        placeholder="Enter complete address"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>Medical History</label>
+
+                    <textarea
+                        name="medical_history"
+                        placeholder="Enter previous medical conditions, allergies, medications etc."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button type="submit" class="save">
+                    ✓ Save Patient
+                </button>
+
+                <a
+                    href="{% url 'patient_list' %}"
+                    class="cancel">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

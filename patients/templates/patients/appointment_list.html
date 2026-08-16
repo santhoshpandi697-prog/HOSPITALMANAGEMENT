@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Appointments | HMS</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial,sans-serif;
+    background: #f3f7fb;
+    color: #172b4d;
+}
+
+.sidebar {
+    position: fixed;
+    width: 245px;
+    height: 100vh;
+    background: linear-gradient(180deg,#16283d,#213b56);
+    padding: 28px 16px;
+    color: white;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    padding: 0 18px 35px;
+}
+
+.logo span {
+    color: #4fc3f7;
+}
+
+.menu-title {
+    font-size: 11px;
+    color: #8fa7bd;
+    padding: 0 18px 10px;
+}
+
+.menu a {
+    display: block;
+    padding: 14px 18px;
+    margin: 6px 0;
+    border-radius: 10px;
+    color: #dce8f2;
+    text-decoration: none;
+}
+
+.menu a:hover,
+.menu a.active {
+    background: #3498db;
+    color: white;
+}
+
+.main {
+    margin-left: 245px;
+    padding: 35px;
+}
+
+.header {
+    background: white;
+    padding: 28px 30px;
+    border-radius: 18px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 25px rgba(20,50,80,.06);
+}
+
+.header h1 {
+    margin: 0 0 8px;
+}
+
+.header p {
+    margin: 0;
+    color: #718096;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.add {
+    background: #27ae60;
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 9px;
+    font-weight: bold;
+}
+
+.table-card {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(20,50,80,.06);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    background: #f5f8fb;
+    padding: 15px;
+    font-size: 12px;
+    color: #718096;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 17px 15px;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 14px;
+}
+
+.patient {
+    font-weight: bold;
+}
+
+.doctor {
+    color: #3498db;
+}
+
+.status {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    background: #e9f8ef;
+    color: #219653;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.delete {
+    color: #e74c3c;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.empty {
+    text-align: center;
+    padding: 50px;
+    color: #718096;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏥 HMS<span>.</span>
+    </div>
+
+    <div class="menu-title">
+        Main Menu
+    </div>
+
+    <div class="menu">
+
+        <a href="{% url 'dashboard' %}">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'patient_list' %}">
+            👥 Patients
+        </a>
+
+        <a href="{% url 'doctor_list' %}">
+            🩺 Doctors
+        </a>
+
+        <a href="{% url 'appointment_list' %}" class="active">
+            📅 Appointments
+        </a>
+
+        <a href="/admin/">
+            ⚙️ Administration
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="main">
+
+    <div class="header">
+
+        <h1>Appointment Management</h1>
+
+        <p>
+            Schedule and manage patient appointments.
+        </p>
+
+    </div>
+
+
+    <div class="top">
+
+        <strong>
+            Appointment Schedule
+        </strong>
+
+        <a
+            href="{% url 'add_appointment' %}"
+            class="add">
+            + Book Appointment
+        </a>
+
+    </div>
+
+
+    <div class="table-card">
+
+        {% if appointments %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Patient</th>
+
+                    <th>Doctor</th>
+
+                    <th>Date</th>
+
+                    <th>Time</th>
+
+                    <th>Status</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for appointment in appointments %}
+
+            <tr>
+
+                <td class="patient">
+                    👤 {{ appointment.patient.name }}
+                </td>
+
+                <td class="doctor">
+                    🩺 Dr. {{ appointment.doctor.name }}
+                </td>
+
+                <td>
+                    {{ appointment.date }}
+                </td>
+
+                <td>
+                    {{ appointment.time }}
+                </td>
+
+                <td>
+
+                    <span class="status">
+                        {{ appointment.status }}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <a
+                        href="{% url 'delete_appointment' appointment.id %}"
+                        class="delete">
+                        🗑️ Delete
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+
+            <h2>📅 No Appointments</h2>
+
+            <p>
+                No appointments have been scheduled yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

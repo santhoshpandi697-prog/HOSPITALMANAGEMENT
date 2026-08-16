@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Appointment | Hospital Management</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6fa;
+            color: #1f344d;
+        }
+
+        .layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 240px;
+            background: #203247;
+            color: white;
+            padding: 30px 18px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 45px;
+            padding-left: 18px;
+        }
+
+        .logo span {
+            color: #35a8e0;
+        }
+
+        .menu-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #9fb0c2;
+            margin: 0 0 15px 18px;
+            letter-spacing: 1px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #dce6ef;
+            padding: 14px 18px;
+            margin-bottom: 7px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #2d91c9;
+            color: white;
+        }
+
+        /* CONTENT */
+
+        .content {
+            flex: 1;
+            padding: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-card {
+            width: 520px;
+            background: white;
+            border-radius: 18px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(31, 52, 77, 0.12);
+        }
+
+        .icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            background: #fff0f0;
+            color: #e74c3c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 29px;
+        }
+
+        .warning {
+            color: #718096;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .appointment-box {
+            background: #f7f9fc;
+            border: 1px solid #e3e9f0;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        .appointment-box p {
+            margin: 8px 0;
+            color: #52677d;
+        }
+
+        .appointment-box strong {
+            color: #203247;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        button,
+        .cancel {
+            border: none;
+            padding: 13px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .cancel {
+            background: #edf2f7;
+            color: #40566d;
+        }
+
+        .cancel:hover {
+            background: #dfe7ef;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏥 HMS<span>.</span>
+        </div>
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <div class="menu">
+
+            <a href="{% url 'dashboard' %}">
+                🏠 Dashboard
+            </a>
+
+            <a href="{% url 'patient_list' %}">
+                👥 Patients
+            </a>
+
+            <a href="{% url 'doctor_list' %}">
+                🩺 Doctors
+            </a>
+
+            <a href="{% url 'appointment_list' %}">
+                📅 Appointments
+            </a>
+
+            <a href="/admin/">
+                ⚙️ Administration
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="content">
+
+        <div class="delete-card">
+
+            <div class="icon">
+                🗑️
+            </div>
+
+            <h1>Delete Appointment?</h1>
+
+            <p class="warning">
+                Are you sure you want to permanently delete this appointment?
+                This action cannot be undone.
+            </p>
+
+
+            <div class="appointment-box">
+
+                <p>
+                    <strong>Patient:</strong>
+                    {{ appointment.patient.name }}
+                </p>
+
+                <p>
+                    <strong>Doctor:</strong>
+                    Dr. {{ appointment.doctor.name }}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ appointment.appointment_date }}
+                </p>
+
+                <p>
+                    <strong>Time:</strong>
+                    {{ appointment.appointment_time }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ appointment.status }}
+                </p>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="actions">
+
+                    <button
+                        type="submit"
+                        class="delete-btn">
+                        🗑 Delete Appointment
+                    </button>
+
+                    <a
+                        href="{% url 'appointment_list' %}"
+                        class="cancel">
+                        ← Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
