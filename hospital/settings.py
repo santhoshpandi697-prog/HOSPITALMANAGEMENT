@@ -2,7 +2,6 @@ from pathlib import Path
 import os
 import dj_database_url
 
-# Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -15,12 +14,21 @@ SECRET_KEY = os.environ.get(
     "django-insecure-hospital-management-local-key"
 )
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-# Allow Render + Vercel + local development
+
+# Render automatically provides RENDER_EXTERNAL_HOSTNAME.
+RENDER_HOST = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
 ALLOWED_HOSTS = [
-    "*",
+    "localhost",
+    "127.0.0.1",
+    ".vercel.app",
+    ".onrender.com",
 ]
+
+if RENDER_HOST:
+    ALLOWED_HOSTS.append(RENDER_HOST)
 
 
 # =========================
@@ -70,10 +78,13 @@ WSGI_APPLICATION = "hospital.wsgi.application"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+
         "DIRS": [
             BASE_DIR / "templates",
         ],
+
         "APP_DIRS": True,
+
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
@@ -92,6 +103,7 @@ TEMPLATES = [
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
+
     DATABASES = {
         "default": dj_database_url.parse(
             DATABASE_URL,
@@ -99,7 +111,9 @@ if DATABASE_URL:
             ssl_require=True,
         )
     }
+
 else:
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
