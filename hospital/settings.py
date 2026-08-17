@@ -2,12 +2,17 @@ from pathlib import Path
 import os
 import dj_database_url
 
+
+# =========================================================
+# BASE DIRECTORY
+# =========================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# =========================
+# =========================================================
 # SECURITY
-# =========================
+# =========================================================
 
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
@@ -17,23 +22,15 @@ SECRET_KEY = os.environ.get(
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 
-# Render automatically provides RENDER_EXTERNAL_HOSTNAME.
-RENDER_HOST = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    ".vercel.app",
-    ".onrender.com",
-]
-
-if RENDER_HOST:
-    ALLOWED_HOSTS.append(RENDER_HOST)
+# IMPORTANT:
+# Render / Vercel host issue avoid செய்ய temporary-a
+# all hosts allow செய்கிறோம்.
+ALLOWED_HOSTS = ["*"]
 
 
-# =========================
+# =========================================================
 # APPLICATIONS
-# =========================
+# =========================================================
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -47,9 +44,9 @@ INSTALLED_APPS = [
 ]
 
 
-# =========================
+# =========================================================
 # MIDDLEWARE
-# =========================
+# =========================================================
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -62,18 +59,16 @@ MIDDLEWARE = [
 ]
 
 
-# =========================
-# URL / WSGI
-# =========================
+# =========================================================
+# URL CONFIGURATION
+# =========================================================
 
 ROOT_URLCONF = "hospital.urls"
 
-WSGI_APPLICATION = "hospital.wsgi.application"
 
-
-# =========================
+# =========================================================
 # TEMPLATES
-# =========================
+# =========================================================
 
 TEMPLATES = [
     {
@@ -96,9 +91,16 @@ TEMPLATES = [
 ]
 
 
-# =========================
+# =========================================================
+# WSGI
+# =========================================================
+
+WSGI_APPLICATION = "hospital.wsgi.application"
+
+
+# =========================================================
 # DATABASE
-# =========================
+# =========================================================
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
@@ -122,29 +124,41 @@ else:
     }
 
 
-# =========================
+# =========================================================
 # PASSWORD VALIDATION
-# =========================
+# =========================================================
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "UserAttributeSimilarityValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "MinimumLengthValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "CommonPasswordValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "NumericPasswordValidator"
+        ),
     },
 ]
 
 
-# =========================
+# =========================================================
 # INTERNATIONALIZATION
-# =========================
+# =========================================================
 
 LANGUAGE_CODE = "en-us"
 
@@ -155,9 +169,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-# =========================
+# =========================================================
 # STATIC FILES
-# =========================
+# =========================================================
 
 STATIC_URL = "/static/"
 
@@ -168,27 +182,31 @@ STATICFILES_DIRS = [
 ]
 
 
-# =========================
+# =========================================================
 # DEFAULT PRIMARY KEY
-# =========================
+# =========================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# =========================
-# HTTPS / CSRF
-# =========================
+# =========================================================
+# HTTPS / RENDER / VERCEL
+# =========================================================
 
 SECURE_PROXY_SSL_HEADER = (
     "HTTP_X_FORWARDED_PROTO",
     "https",
 )
 
+
+# CSRF trusted domains
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",
     "https://*.vercel.app",
 ]
 
+
+# Secure cookies only when using HTTPS
 SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
