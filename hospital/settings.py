@@ -21,10 +21,7 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-
-# IMPORTANT:
-# Render / Vercel host issue avoid செய்ய temporary-a
-# all hosts allow செய்கிறோம்.
+# Render / Vercel
 ALLOWED_HOSTS = ["*"]
 
 
@@ -50,11 +47,17 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
+
     "django.middleware.common.CommonMiddleware",
+
     "django.middleware.csrf.CsrfViewMiddleware",
+
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+
     "django.contrib.messages.middleware.MessageMiddleware",
+
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -83,7 +86,9 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+
                 "django.contrib.auth.context_processors.auth",
+
                 "django.contrib.messages.context_processors.messages",
             ],
         },
@@ -103,6 +108,7 @@ WSGI_APPLICATION = "hospital.wsgi.application"
 # =========================================================
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
+
 
 if DATABASE_URL:
 
@@ -135,18 +141,21 @@ AUTH_PASSWORD_VALIDATORS = [
             "UserAttributeSimilarityValidator"
         ),
     },
+
     {
         "NAME": (
             "django.contrib.auth.password_validation."
             "MinimumLengthValidator"
         ),
     },
+
     {
         "NAME": (
             "django.contrib.auth.password_validation."
             "CommonPasswordValidator"
         ),
     },
+
     {
         "NAME": (
             "django.contrib.auth.password_validation."
@@ -190,7 +199,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # =========================================================
-# HTTPS / RENDER / VERCEL
+# HTTPS / RENDER
 # =========================================================
 
 SECURE_PROXY_SSL_HEADER = (
@@ -199,14 +208,20 @@ SECURE_PROXY_SSL_HEADER = (
 )
 
 
-# CSRF trusted domains
+# =========================================================
+# CSRF
+# =========================================================
+
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",
     "https://*.vercel.app",
 ]
 
 
-# Secure cookies only when using HTTPS
+# =========================================================
+# COOKIES
+# =========================================================
+
 SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
