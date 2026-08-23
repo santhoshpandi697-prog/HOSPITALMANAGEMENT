@@ -1,6 +1,11 @@
 from pathlib import Path
 import os
 
+
+# =========================================================
+# BASE DIRECTORY
+# =========================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -10,26 +15,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
-    "django-insecure-medicare-hospital-management"
+    "django-insecure-hospital-management-project-key"
 )
 
-# Local = True
-# Render = False
-DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "")
+
+# =========================================================
+# ALLOWED HOSTS
+# =========================================================
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    ".vercel.app",
     ".onrender.com",
 ]
 
-if render_host:
-    ALLOWED_HOSTS.append(render_host)
 
+# =========================================================
+# CSRF TRUSTED ORIGINS
+# =========================================================
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://*.vercel.app",
     "https://*.onrender.com",
 ]
 
@@ -56,6 +65,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+
     "whitenoise.middleware.WhiteNoiseMiddleware",
 
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -68,7 +78,7 @@ MIDDLEWARE = [
 
 
 # =========================================================
-# URLS
+# URL CONFIGURATION
 # =========================================================
 
 ROOT_URLCONF = "hospital.urls"
@@ -108,7 +118,6 @@ WSGI_APPLICATION = "hospital.wsgi.application"
 
 # =========================================================
 # DATABASE
-# SQLITE ONLY
 # =========================================================
 
 DATABASES = {
@@ -123,11 +132,36 @@ DATABASES = {
 # PASSWORD VALIDATION
 # =========================================================
 
-AUTH_PASSWORD_VALIDATORS = []
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "UserAttributeSimilarityValidator"
+        ),
+    },
+    {
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "MinimumLengthValidator"
+        ),
+    },
+    {
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "CommonPasswordValidator"
+        ),
+    },
+    {
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "NumericPasswordValidator"
+        ),
+    },
+]
 
 
 # =========================================================
-# INTERNATIONALIZATION
+# LANGUAGE & TIME
 # =========================================================
 
 LANGUAGE_CODE = "en-us"
@@ -145,36 +179,27 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# IMPORTANT:
-# Do NOT use Manifest storage here.
-# It can cause local 500 errors when collectstatic
-# has not been run.
+
+# =========================================================
+# WHITENOISE
+# =========================================================
 
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
-
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": (
+            "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        ),
     },
 }
-
-
-# =========================================================
-# SECURITY COOKIES
-# =========================================================
-
-SESSION_COOKIE_SECURE = not DEBUG
-
-CSRF_COOKIE_SECURE = not DEBUG
 
 
 # =========================================================
