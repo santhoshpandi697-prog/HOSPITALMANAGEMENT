@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Patients{% endblock %}{% block page_title %}Patients{% endblock %}
+{% block content %}
+<div class="section-heading"><div><h1>Patients</h1><p>View and manage patient records.</p></div><a class="btn btn-primary" href="{% url 'add_patient' %}">＋ Add Patient</a></div>
+<form class="filter-bar" method="get"><input class="form-control" name="search" value="{{ search }}" placeholder="Search name, phone or email…"><select class="form-control" name="gender"><option value="">All genders</option><option value="Male" {% if gender == "Male" %}selected{% endif %}>Male</option><option value="Female" {% if gender == "Female" %}selected{% endif %}>Female</option><option value="Other" {% if gender == "Other" %}selected{% endif %}>Other</option></select><button class="btn btn-dark">Search</button>{% if search or gender %}<a class="btn btn-ghost" href="{% url 'patient_list' %}">Clear</a>{% endif %}</form>
+<div class="table-card">{% if patients %}<div class="table-wrap"><table><thead><tr><th>Patient</th><th>Age</th><th>Gender</th><th>Phone</th><th>Email</th><th>Actions</th></tr></thead><tbody>
+{% for patient in patients %}<tr><td><b>{{ patient.name }}</b><small>Patient #{{ patient.id }}</small></td><td>{{ patient.age }}</td><td>{{ patient.gender }}</td><td>{{ patient.phone }}</td><td>{{ patient.email|default:"—" }}</td><td class="actions"><a class="icon-btn" href="{% url 'edit_patient' patient.id %}">✎</a><a class="icon-btn danger" href="{% url 'delete_patient' patient.id %}">⌫</a></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty"><div class="empty-icon">♙</div><h3>No patients found</h3><p>Try another search or add a new patient.</p><a class="btn btn-primary" href="{% url 'add_patient' %}">Add patient</a></div>{% endif %}</div>{% include "patients/pagination.html" %}
+{% endblock %}

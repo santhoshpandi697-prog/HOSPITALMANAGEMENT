@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Doctors{% endblock %}{% block page_title %}Doctors{% endblock %}
+{% block content %}
+<div class="section-heading"><div><h1>Doctors</h1><p>Manage your medical team and specialties.</p></div><a class="btn btn-primary" href="{% url 'add_doctor' %}">＋ Add Doctor</a></div>
+<form class="filter-bar" method="get"><input class="form-control" name="search" value="{{ search }}" placeholder="Search doctor, phone or email…"><select class="form-control" name="specialization"><option value="">All specialties</option>{% for item in specializations %}<option value="{{ item }}" {% if specialization == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select><button class="btn btn-dark">Search</button>{% if search or specialization %}<a class="btn btn-ghost" href="{% url 'doctor_list' %}">Clear</a>{% endif %}</form>
+<div class="table-card">{% if doctors %}<div class="table-wrap"><table><thead><tr><th>Doctor</th><th>Specialization</th><th>Experience</th><th>Phone</th><th>Email</th><th>Actions</th></tr></thead><tbody>
+{% for doctor in doctors %}<tr><td><b>Dr. {{ doctor.name }}</b><small>Doctor #{{ doctor.id }}</small></td><td><span class="specialty">{{ doctor.specialization }}</span></td><td>{{ doctor.experience }} year{{ doctor.experience|pluralize }}</td><td>{{ doctor.phone }}</td><td>{{ doctor.email|default:"—" }}</td><td class="actions"><a class="icon-btn" href="{% url 'edit_doctor' doctor.id %}">✎</a><a class="icon-btn danger" href="{% url 'delete_doctor' doctor.id %}">⌫</a></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty"><div class="empty-icon">⚕</div><h3>No doctors found</h3><p>Add your first doctor profile.</p><a class="btn btn-primary" href="{% url 'add_doctor' %}">Add doctor</a></div>{% endif %}</div>{% include "patients/pagination.html" %}
+{% endblock %}

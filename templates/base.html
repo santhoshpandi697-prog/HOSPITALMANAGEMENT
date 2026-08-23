@@ -1,0 +1,18 @@
+{% load static %}
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}MediCare{% endblock %} · Hospital Management</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}"><script defer src="{% static 'js/app.js' %}"></script>
+</head><body><div class="app-shell">
+<aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark">✚</div><div><strong>MediCare</strong><span>Hospital Management</span></div></div>
+<nav class="nav">
+<a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' or request.resolver_match.url_name == 'home' %}active{% endif %}"><span>⌂</span>Dashboard</a>
+<a href="{% url 'patient_list' %}" class="{% if 'patient' in request.resolver_match.url_name %}active{% endif %}"><span>♙</span>Patients</a>
+<a href="{% url 'doctor_list' %}" class="{% if 'doctor' in request.resolver_match.url_name %}active{% endif %}"><span>⚕</span>Doctors</a>
+<a href="{% url 'appointment_list' %}" class="{% if 'appointment' in request.resolver_match.url_name %}active{% endif %}"><span>◷</span>Appointments</a>
+<div class="nav-divider"></div><a href="/admin/"><span>⚙</span>Admin</a>
+</nav><div class="sidebar-footer"><div class="status-dot"></div><div><b>System online</b><small>All services ready</small></div></div>
+</aside>
+<main class="main"><header class="topbar"><button class="menu-btn" id="menuBtn">☰</button><div><div class="eyebrow">Hospital Management</div><div class="top-title">{% block page_title %}Overview{% endblock %}</div></div><div class="top-actions"><div class="date-chip">● <span id="todayDate"></span></div></div></header>
+{% if messages %}<div class="messages">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+<section class="content">{% block content %}{% endblock %}</section></main></div></body></html>
